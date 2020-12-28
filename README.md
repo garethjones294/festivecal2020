@@ -18,6 +18,8 @@ In this lab, you will:
 
 1. Click the **Deploy Azure** button below:
 
+ [![Deploy To Azure](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.svg?sanitize=true)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FAzure%2Fazure-quickstart-templates%2Fmaster%2F101-AAD-DomainServices%2Fazuredeploy.json)
+
 1. Login to the Azure Portal with your credentials.
 
 1. XXXXXXXXXXXXXXX
