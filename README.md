@@ -1,6 +1,6 @@
 # Festive Calendar 2020 - Hands on lab
 
-## Lab 05a - Implement Intersite Connectivity
+## Lab - Implement Intersite Connectivity
 
 **Lab scenario**
 
@@ -16,13 +16,12 @@ In this lab, you will:
 
 ### Task 1: Provision the lab environment
 
-1. The lab environment has already been provisioned for you.
+1. Click the **Deploy Azure** button below:
 
-1. Login to the Azure Portal at **[paste-cs-email](urn:it:godeploy:lab-guide:action-link:paste-cs-email)** with the password **[paste-cs-password](urn:it:godeploy:lab-guide:action-link:paste-cs-password)**
+1. Login to the Azure Portal with your credentials.
 
- ```cli
-https://portal.azure.com
- ```
+1. XXXXXXXXXXXXXXX
+
 	> **Note**: Wait for the deployments to complete before proceeding tothe next task. This should take about 5-15 minutes. To verify the status of the deployments, you can examine the properties of the resource groups you created in this task.
 
 ### Task 2: Configure local and global virtual network peering
@@ -124,7 +123,7 @@ In this task, you will test connectivity between virtual machines on the three v
    Test-NetConnection -ComputerName 10.51.0.4 -Port 3389 -InformationLevel 'Detailed'
    ```
 
- > **Note**: The test uses TCP 3389 since this is this port is allowed by default by operating system firewall. 
+ 	> **Note**: The test uses TCP 3389 since this is this port is allowed by default by operating system firewall. 
 
 
 1. Examine the output of the command and verify that the connection was successful.
