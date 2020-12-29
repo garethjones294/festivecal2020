@@ -1,0 +1,529 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+    },
+    "variables": {
+        "rg0Name": "rg0",
+        "rg0Location": "westus",
+        "rg1Name": "rg1",
+        "rg1Location": "westus",
+        "rg2Name": "rg2",
+        "rg2Location": "eastus",
+        "commonSubnetName": "subnet0",
+        "computeApiVersion": "2018-06-01",
+        "networkApiVersion": "2018-08-01",
+        "vmSize": "Standard_D2s_v3",
+        "vmAdminUsername": "Student",
+        "vmAdminPassword": "Pa55w.rd1234",
+        "rg0NameSuffix": "0",
+        "rg0vmName": "[concat('vm',variables('rg0NameSuffix'))]",
+        "rg0NicName": "[concat('nic',variables('rg0NameSuffix'))]",
+        "rg0VirtualNetworkName": "[concat('vnet',variables('rg0NameSuffix'))]",
+        "rg0PublicIPAddressName": "[concat('pip',variables('rg0NameSuffix'))]",
+        "rg0NsgName": "[concat('nsg',variables('rg0NameSuffix'))]",
+        "rg0VnetIpPrefix": "[concat('10.5',variables('rg0NameSuffix'),'.0.0/22')]", 
+        "rg0SubnetIpPrefix": "[concat('10.5',variables('rg0NameSuffix'),'.0.0/24')]", 
+        "rg0SubnetRef": "[concat(subscription().id, '/resourceGroups/', variables('rg0Name'), '/providers/Microsoft.Network/virtualNetworks/', variables('rg0VirtualNetworkName'), '/subnets/', variables('commonSubnetName'))]",
+        "rg1NameSuffix": "1",
+        "rg1VmName": "[concat('vm',variables('rg1NameSuffix'))]",
+        "rg1NicName": "[concat('nic',variables('rg1NameSuffix'))]",
+        "rg1VirtualNetworkName": "[concat('vnet',variables('rg1NameSuffix'))]",
+        "rg1PublicIPAddressName": "[concat('pip',variables('rg1NameSuffix'))]",
+        "rg1NsgName": "[concat('nsg',variables('rg1NameSuffix'))]",
+        "rg1VnetIpPrefix": "[concat('10.5',variables('rg1NameSuffix'),'.0.0/22')]", 
+        "rg1SubnetIpPrefix": "[concat('10.5',variables('rg1NameSuffix'),'.0.0/24')]", 
+        "rg1SubnetRef": "[concat(subscription().id, '/resourceGroups/', variables('rg1Name'), '/providers/Microsoft.Network/virtualNetworks/', variables('rg1VirtualNetworkName'), '/subnets/', variables('commonSubnetName'))]",
+        "rg2NameSuffix": "2",
+        "rg2VmName": "[concat('vm',variables('rg2NameSuffix'))]",
+        "rg2NicName": "[concat('nic',variables('rg2NameSuffix'))]",
+        "rg2VirtualNetworkName": "[concat('vnet',variables('rg2NameSuffix'))]",
+        "rg2PublicIPAddressName": "[concat('pip',variables('rg2NameSuffix'))]",
+        "rg2NsgName": "[concat('nsg',variables('rg2NameSuffix'))]",
+        "rg2VnetIpPrefix": "[concat('10.5',variables('rg2NameSuffix'),'.0.0/22')]", 
+        "rg2SubnetIpPrefix": "[concat('10.5',variables('rg2NameSuffix'),'.0.0/24')]", 
+        "rg2SubnetRef": "[concat(subscription().id, '/resourceGroups/', variables('rg2Name'), '/providers/Microsoft.Network/virtualNetworks/', variables('rg2VirtualNetworkName'), '/subnets/', variables('commonSubnetName'))]"
+    },
+    "resources": [
+        {
+            "name": "[variables('rg0Name')]",
+            "type": "Microsoft.Resources/resourceGroups",
+            "apiVersion": "2020-06-01",
+            "location": "[variables('rg0Location')]",
+            "tags": {},
+            "properties": {}
+        },
+        {
+            "name": "[variables('rg1Name')]",
+            "type": "Microsoft.Resources/resourceGroups",
+            "apiVersion": "2020-06-01",
+            "location": "[variables('rg1Location')]",
+            "tags": {},
+            "properties": {}
+        },
+        {
+            "name": "[variables('rg2Name')]",
+            "type": "Microsoft.Resources/resourceGroups",
+            "apiVersion": "2020-06-01",
+            "location": "[variables('rg2Location')]",
+            "tags": {},
+            "properties": {}
+        },
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-06-01",
+            "name": "rg0Deployments",
+            "resourceGroup": "[variables('rg0Name')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/resourceGroups/', variables('rg0Name'))]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "template": {
+                    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {},
+                    "variables": {},
+                    "resources": [
+                        {
+                            "name": "[variables('rg0VmName')]",
+                            "type": "Microsoft.Compute/virtualMachines",
+                            "apiVersion": "[variables('computeApiVersion')]",
+                            "location": "[variables('rg0Location')]",
+                            "dependsOn": [
+                                "[variables('rg0NicName')]"
+                            ],
+                            "properties": {
+                                "osProfile": {
+                                    "computerName": "[variables('rg0VmName')]",
+                                    "adminUsername": "[variables('vmAdminUsername')]",
+                                    "adminPassword": "[variables('vmAdminPassword')]",
+                                    "windowsConfiguration": {
+                                        "provisionVmAgent": "true"
+                                    }
+                                },
+                                "hardwareProfile": {
+                                    "vmSize": "[variables('vmSize')]"
+                                },
+                                "storageProfile": {
+                                    "imageReference": {
+                                        "publisher": "MicrosoftWindowsServer",
+                                        "offer": "WindowsServer",
+                                        "sku": "2019-Datacenter",
+                                        "version": "latest"
+                                    },
+                                    "osDisk": {
+                                        "createOption": "fromImage"
+                                    },
+                                    "dataDisks": []
+                                },
+                                "networkProfile": {
+                                    "networkInterfaces": [
+                                        {
+                                            "properties": {
+                                                "primary": true
+                                            },
+                                            "id": "[concat(subscription().id, '/resourceGroups/', variables('rg0Name'), '/providers/Microsoft.Network/networkInterfaces/', variables('rg0NicName'))]"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "type": "Microsoft.Network/virtualNetworks",
+                            "name": "[variables('rg0VirtualNetworkName')]",
+                            "apiVersion": "[variables('networkApiVersion')]",
+                            "location": "[variables('rg0Location')]",
+                            "comments": "Virtual Network",
+                            "properties": {
+                                "addressSpace": {
+                                    "addressPrefixes": [
+                                        "[variables('rg0VnetIpPrefix')]"
+                                    ]
+                                },
+                                "subnets": [
+                                    {
+                                        "name": "[variables('commonSubnetName')]",
+                                        "properties": {
+                                            "addressPrefix": "[variables('rg0SubnetIpPrefix')]"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "[variables('rg0NicName')]",
+                            "type": "Microsoft.Network/networkInterfaces",
+                            "apiVersion": "[variables('networkApiVersion')]",
+                            "location": "[variables('rg0Location')]",
+                            "comments": "Primary NIC",
+                            "dependsOn": [
+                                "[variables('rg0PublicIpAddressName')]",
+                                "[variables('rg0NsgName')]",
+                                "[variables('rg0VirtualNetworkName')]"
+                            ],
+                            "properties": {
+                                "ipConfigurations": [
+                                    {
+                                        "name": "ipconfig1",
+                                        "properties": {
+                                            "subnet": {
+                                                "id": "[variables('rg0SubnetRef')]"
+                                            },
+                                            "privateIPAllocationMethod": "Dynamic",
+                                            "publicIpAddress": {
+                                                "id": "[concat(subscription().id, '/resourceGroups/', variables('rg0Name'), '/providers/Microsoft.Network/publicIpAddresses/', variables('rg0PublicIpAddressName'))]"
+                                            }
+                                        }
+                                    }
+                                ],
+                                "networkSecurityGroup": {
+                                    "id": "[concat(subscription().id, '/resourceGroups/', variables('rg0Name'), '/providers/Microsoft.Network/networkSecurityGroups/', variables('rg0NsgName'))]"
+                                }
+                            }
+                        },
+                        {
+                            "name": "[variables('rg0PublicIpAddressName')]",
+                            "type": "Microsoft.Network/publicIpAddresses",
+                            "apiVersion": "[variables('networkApiVersion')]",
+                            "location": "[variables('rg0Location')]",
+                            "comments": "Public IP for Primary NIC",
+                            "properties": {
+                                "publicIpAllocationMethod": "Dynamic"
+                            }
+                        },
+                        {
+                            "name": "[variables('rg0NsgName')]",
+                            "type": "Microsoft.Network/networkSecurityGroups",
+                            "apiVersion": "[variables('networkApiVersion')]",
+                            "location": "[variables('rg0Location')]",
+                            "comments": "Network Security Group (NSG) for Primary NIC",
+                            "properties": {
+                                "securityRules": [
+                                    {
+                                        "name": "default-allow-rdp",
+                                        "properties": {
+                                            "priority": 1000,
+                                            "sourceAddressPrefix": "*",
+                                            "protocol": "Tcp",
+                                            "destinationPortRange": "3389",
+                                            "access": "Allow",
+                                            "direction": "Inbound",
+                                            "sourcePortRange": "*",
+                                            "destinationAddressPrefix": "*"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ],
+                    "outputs": {}
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-06-01",
+            "name": "rg1Deployments",
+            "resourceGroup": "[variables('rg1Name')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/resourceGroups/', variables('rg1Name'))]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "template": {
+                    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {},
+                    "variables": {},
+                    "resources": [
+                        {
+                            "name": "[variables('rg1VmName')]",
+                            "type": "Microsoft.Compute/virtualMachines",
+                            "apiVersion": "[variables('computeApiVersion')]",
+                            "location": "[variables('rg1Location')]",
+                            "dependsOn": [
+                                "[variables('rg1NicName')]"
+                            ],
+                            "properties": {
+                                "osProfile": {
+                                    "computerName": "[variables('rg1VmName')]",
+                                    "adminUsername": "[variables('vmAdminUsername')]",
+                                    "adminPassword": "[variables('vmAdminPassword')]",
+                                    "windowsConfiguration": {
+                                        "provisionVmAgent": "true"
+                                    }
+                                },
+                                "hardwareProfile": {
+                                    "vmSize": "[variables('vmSize')]"
+                                },
+                                "storageProfile": {
+                                    "imageReference": {
+                                        "publisher": "MicrosoftWindowsServer",
+                                        "offer": "WindowsServer",
+                                        "sku": "2019-Datacenter",
+                                        "version": "latest"
+                                    },
+                                    "osDisk": {
+                                        "createOption": "fromImage"
+                                    },
+                                    "dataDisks": []
+                                },
+                                "networkProfile": {
+                                    "networkInterfaces": [
+                                        {
+                                            "properties": {
+                                                "primary": true
+                                            },
+                                            "id": "[concat(subscription().id, '/resourceGroups/', variables('rg1Name'), '/providers/Microsoft.Network/networkInterfaces/', variables('rg1NicName'))]"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "type": "Microsoft.Network/virtualNetworks",
+                            "name": "[variables('rg1VirtualNetworkName')]",
+                            "apiVersion": "[variables('networkApiVersion')]",
+                            "location": "[variables('rg1Location')]",
+                            "comments": "Virtual Network",
+                            "properties": {
+                                "addressSpace": {
+                                    "addressPrefixes": [
+                                        "[variables('rg1VnetIpPrefix')]"
+                                    ]
+                                },
+                                "subnets": [
+                                    {
+                                        "name": "[variables('commonSubnetName')]",
+                                        "properties": {
+                                            "addressPrefix": "[variables('rg1SubnetIpPrefix')]"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "[variables('rg1NicName')]",
+                            "type": "Microsoft.Network/networkInterfaces",
+                            "apiVersion": "[variables('networkApiVersion')]",
+                            "location": "[variables('rg1Location')]",
+                            "comments": "Primary NIC",
+                            "dependsOn": [
+                                "[variables('rg1PublicIpAddressName')]",
+                                "[variables('rg1NsgName')]",
+                                "[variables('rg1VirtualNetworkName')]"
+                            ],
+                            "properties": {
+                                "ipConfigurations": [
+                                    {
+                                        "name": "ipconfig1",
+                                        "properties": {
+                                            "subnet": {
+                                                "id": "[variables('rg1SubnetRef')]"
+                                            },
+                                            "privateIPAllocationMethod": "Dynamic",
+                                            "publicIpAddress": {
+                                                "id": "[concat(subscription().id, '/resourceGroups/', variables('rg1Name'), '/providers/Microsoft.Network/publicIpAddresses/', variables('rg1PublicIpAddressName'))]"
+                                            }
+                                        }
+                                    }
+                                ],
+                                "networkSecurityGroup": {
+                                    "id": "[concat(subscription().id, '/resourceGroups/', variables('rg1Name'), '/providers/Microsoft.Network/networkSecurityGroups/', variables('rg1NsgName'))]"
+                                }
+                            }
+                        },
+                        {
+                            "name": "[variables('rg1PublicIpAddressName')]",
+                            "type": "Microsoft.Network/publicIpAddresses",
+                            "apiVersion": "[variables('networkApiVersion')]",
+                            "location": "[variables('rg1Location')]",
+                            "comments": "Public IP for Primary NIC",
+                            "properties": {
+                                "publicIpAllocationMethod": "Dynamic"
+                            }
+                        },
+                        {
+                            "name": "[variables('rg1NsgName')]",
+                            "type": "Microsoft.Network/networkSecurityGroups",
+                            "apiVersion": "[variables('networkApiVersion')]",
+                            "location": "[variables('rg1Location')]",
+                            "comments": "Network Security Group (NSG) for Primary NIC",
+                            "properties": {
+                                "securityRules": [
+                                    {
+                                        "name": "default-allow-rdp",
+                                        "properties": {
+                                            "priority": 1000,
+                                            "sourceAddressPrefix": "*",
+                                            "protocol": "Tcp",
+                                            "destinationPortRange": "3389",
+                                            "access": "Allow",
+                                            "direction": "Inbound",
+                                            "sourcePortRange": "*",
+                                            "destinationAddressPrefix": "*"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ],
+                    "outputs": {}
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-06-01",
+            "name": "rg2Deployments",
+            "resourceGroup": "[variables('rg2Name')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/resourceGroups/', variables('rg2Name'))]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "template": {
+                    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {},
+                    "variables": {},
+                    "resources": [
+                        {
+                            "name": "[variables('rg2VmName')]",
+                            "type": "Microsoft.Compute/virtualMachines",
+                            "apiVersion": "[variables('computeApiVersion')]",
+                            "location": "[variables('rg2Location')]",
+                            "dependsOn": [
+                                "[variables('rg2NicName')]"
+                            ],
+                            "properties": {
+                                "osProfile": {
+                                    "computerName": "[variables('rg2VmName')]",
+                                    "adminUsername": "[variables('vmAdminUsername')]",
+                                    "adminPassword": "[variables('vmAdminPassword')]",
+                                    "windowsConfiguration": {
+                                        "provisionVmAgent": "true"
+                                    }
+                                },
+                                "hardwareProfile": {
+                                    "vmSize": "[variables('vmSize')]"
+                                },
+                                "storageProfile": {
+                                    "imageReference": {
+                                        "publisher": "MicrosoftWindowsServer",
+                                        "offer": "WindowsServer",
+                                        "sku": "2019-Datacenter",
+                                        "version": "latest"
+                                    },
+                                    "osDisk": {
+                                        "createOption": "fromImage"
+                                    },
+                                    "dataDisks": []
+                                },
+                                "networkProfile": {
+                                    "networkInterfaces": [
+                                        {
+                                            "properties": {
+                                                "primary": true
+                                            },
+                                            "id": "[concat(subscription().id, '/resourceGroups/', variables('rg2Name'), '/providers/Microsoft.Network/networkInterfaces/', variables('rg2NicName'))]"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "type": "Microsoft.Network/virtualNetworks",
+                            "name": "[variables('rg2VirtualNetworkName')]",
+                            "apiVersion": "[variables('networkApiVersion')]",
+                            "location": "[variables('rg2Location')]",
+                            "comments": "Virtual Network",
+                            "properties": {
+                                "addressSpace": {
+                                    "addressPrefixes": [
+                                        "[variables('rg2VnetIpPrefix')]"
+                                    ]
+                                },
+                                "subnets": [
+                                    {
+                                        "name": "[variables('commonSubnetName')]",
+                                        "properties": {
+                                            "addressPrefix": "[variables('rg2SubnetIpPrefix')]"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "[variables('rg2NicName')]",
+                            "type": "Microsoft.Network/networkInterfaces",
+                            "apiVersion": "[variables('networkApiVersion')]",
+                            "location": "[variables('rg2Location')]",
+                            "comments": "Primary NIC",
+                            "dependsOn": [
+                                "[variables('rg2PublicIpAddressName')]",
+                                "[variables('rg2NsgName')]",
+                                "[variables('rg2VirtualNetworkName')]"
+                            ],
+                            "properties": {
+                                "ipConfigurations": [
+                                    {
+                                        "name": "ipconfig1",
+                                        "properties": {
+                                            "subnet": {
+                                                "id": "[variables('rg2SubnetRef')]"
+                                            },
+                                            "privateIPAllocationMethod": "Dynamic",
+                                            "publicIpAddress": {
+                                                "id": "[concat(subscription().id, '/resourceGroups/', variables('rg2Name'), '/providers/Microsoft.Network/publicIpAddresses/', variables('rg2PublicIpAddressName'))]"
+                                            }
+                                        }
+                                    }
+                                ],
+                                "networkSecurityGroup": {
+                                    "id": "[concat(subscription().id, '/resourceGroups/', variables('rg2Name'), '/providers/Microsoft.Network/networkSecurityGroups/', variables('rg2NsgName'))]"
+                                }
+                            }
+                        },
+                        {
+                            "name": "[variables('rg2PublicIpAddressName')]",
+                            "type": "Microsoft.Network/publicIpAddresses",
+                            "apiVersion": "[variables('networkApiVersion')]",
+                            "location": "[variables('rg2Location')]",
+                            "comments": "Public IP for Primary NIC",
+                            "properties": {
+                                "publicIpAllocationMethod": "Dynamic"
+                            }
+                        },
+                        {
+                            "name": "[variables('rg2NsgName')]",
+                            "type": "Microsoft.Network/networkSecurityGroups",
+                            "apiVersion": "[variables('networkApiVersion')]",
+                            "location": "[variables('rg2Location')]",
+                            "comments": "Network Security Group (NSG) for Primary NIC",
+                            "properties": {
+                                "securityRules": [
+                                    {
+                                        "name": "default-allow-rdp",
+                                        "properties": {
+                                            "priority": 1000,
+                                            "sourceAddressPrefix": "*",
+                                            "protocol": "Tcp",
+                                            "destinationPortRange": "3389",
+                                            "access": "Allow",
+                                            "direction": "Inbound",
+                                            "sourcePortRange": "*",
+                                            "destinationAddressPrefix": "*"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ],
+                    "outputs": {}
+                }
+            }
+        }
+    ]
+}
