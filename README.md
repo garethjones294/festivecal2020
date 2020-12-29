@@ -16,6 +16,8 @@ In this lab, you will:
 
 ### Task 1: Provision the lab environment
 
+In this task, you will deploy three virtual machines, each into a separate virtual network, with two of them in the same Azure region and the third one in another Azure region.
+
 1. Click the **Deploy Azure** button below:
 
 	 [![Deploy To Azure](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.svg?sanitize=true)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fgarethjones294%2Ffestivecal2020%2Fmain%2Fazuredeploy.json)
