@@ -28,6 +28,10 @@ In this task, you will deploy three virtual machines, each into a separate virtu
 
  	![screenshot](https://github.com/garethjones294/festivecal2020/blob/main/images/1.png)
 
+1. On the review screen click **Create**
+
+	 ![screenshot](https://github.com/garethjones294/festivecal2020/blob/main/images/2.png)
+
 	> **Note**: Wait for the deployments to complete before proceeding tothe next task. This should take about 5-15 minutes. To verify the status of the deployments, you can examine the properties of the resource groups you created in this task.
 
 ### Task 2: Configure local and global virtual network peering
