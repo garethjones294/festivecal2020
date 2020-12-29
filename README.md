@@ -14,6 +14,8 @@ In this lab, you will:
 + Task 2: Configure local and global virtual network peering
 + Task 3: Test intersite connectivity 
 
+	 ![screenshot](https://github.com/garethjones294/festivecal2020/blob/main/images/0.png)
+
 ### Task 1: Provision the lab environment
 
 In this task, you will deploy three virtual machines, each into a separate virtual network, with two of them in the same Azure region and the third one in another Azure region.
