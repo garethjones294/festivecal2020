@@ -14,7 +14,7 @@ In this lab, you will:
 + Task 2: Configure local and global virtual network peering
 + Task 3: Test intersite connectivity 
 
-	 ![screenshot](https://github.com/garethjones294/festivecal2020/blob/main/images/0v2.png)
+	 ![screenshot](https://github.com/garethjones294/festivecal2020/blob/main/images/0v3.png)
 
 ### Task 1: Provision the lab environment
 
